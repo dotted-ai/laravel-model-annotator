@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Database\Eloquent\Casts\Castable;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -25,16 +24,25 @@ class AnnotateModelDocs extends Command
             $class = $this->getClassFromFile($file);
             if (!class_exists($class)) continue;
 
-            $model = new $class;
-            if (!method_exists($model, 'getTable')) continue;
-
-            $table = $model->getTable();
-
             try {
+                $reflection = new ReflectionClass($class);
+                if ($reflection->isEnum() || $reflection->isAbstract()) {
+                    continue;
+                }
+
+                $model = $reflection->newInstance();
+                if (!method_exists($model, 'getTable')) continue;
+
+                $table = $model->getTable();
+
                 $columns = DB::getSchemaBuilder()->getColumnListing($table);
                 $columnData = collect($columns)->map(function ($col) use ($table) {
+                    $columnDetails = DB::selectOne(
+                        'SELECT is_nullable FROM information_schema.columns WHERE table_name = ? AND column_name = ?',
+                        [$table, $col]
+                    );
+                    $nullable = optional($columnDetails)->is_nullable === 'YES';
                     $type = DB::getSchemaBuilder()->getColumnType($table, $col);
-                    $nullable = DB::select("SHOW COLUMNS FROM `$table` WHERE Field = ?", [$col])[0]->Null === 'YES';
                     return "@property " . ($nullable ? "?" : "") . "$type \$$col";
                 });
 
@@ -45,8 +53,9 @@ class AnnotateModelDocs extends Command
 
                 $this->annotateFile($file->getPathname(), $annotations);
                 $this->info("Annotated: $class");
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 $this->warn("Skipping $class: " . $e->getMessage());
+                continue;
             }
         }
     }
@@ -63,7 +72,7 @@ class AnnotateModelDocs extends Command
     private function annotateFile($filePath, $annotations)
     {
         $contents = File::get($filePath);
-        $contents = preg_replace('/\/\*\*\n(\s*\*.*\n)*\s*\*\//', '', $contents); // remove old annotation
+        $contents = preg_replace('/\/\*\*\n(\s*\*.*\n)*\s*\*\//', '', $contents);
 
         $docBlock = "/**\n" . $annotations->map(fn($a) => " * $a")->implode("\n") . "\n */\n";
         $contents = preg_replace('/<\?php/', "<?php\n\n$docBlock", $contents, 1);
