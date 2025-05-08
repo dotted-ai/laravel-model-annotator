@@ -1,8 +1,3 @@
-Here’s a more **comprehensive `README.md`** for your Laravel Model Annotator package, designed for GitHub or Packagist:
-
----
-
-````markdown
 # 🔍 Laravel Model Annotator
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
@@ -12,7 +7,7 @@ Here’s a more **comprehensive `README.md`** for your Laravel Model Annotator p
 ---
 
 ## 🚀 Features
-
+z
 - ✅ Annotates all model properties based on database columns.
 - 🔁 Detects and documents Eloquent relationships (`hasMany`, `belongsTo`, etc).
 - 🧠 Adds annotations for casted attributes using Laravel's `$casts`.
