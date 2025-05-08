@@ -7,7 +7,7 @@
 ---
 
 ## 🚀 Features
-z
+
 - ✅ Annotates all model properties based on database columns.
 - 🔁 Detects and documents Eloquent relationships (`hasMany`, `belongsTo`, etc).
 - 🧠 Adds annotations for casted attributes using Laravel's `$casts`.
