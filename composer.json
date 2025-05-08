@@ -1,6 +1,6 @@
 {
   "name": "dottedai/laravel-model-annotator",
-  "description": "Laravel command to annotate Eloquent models with database schema and relationships.",
+  "description": "Laravel command to annotate Eloquent models with database schema, relationships, and casts.",
   "type": "library",
   "license": "MIT",
   "authors": [
@@ -15,14 +15,16 @@
   },
   "autoload": {
     "psr-4": {
-      "ModelAnnotator\\": "src/"
+      "DottedAI\\ModelAnnotator\\": "src/"
     }
   },
   "extra": {
     "laravel": {
       "providers": [
-        "ModelAnnotator\\ModelAnnotatorServiceProvider"
+        "DottedAI\\ModelAnnotator\\ModelAnnotatorServiceProvider"
       ]
     }
-  }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }
