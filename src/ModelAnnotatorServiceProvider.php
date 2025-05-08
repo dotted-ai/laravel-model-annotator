@@ -1,16 +1,16 @@
 <?php
 
-namespace ModelAnnotator;
+namespace DottedAI\ModelAnnotator;
 
 use Illuminate\Support\ServiceProvider;
-use ModelAnnotator\Console\Commands\AnnotateModels;
+use DottedAI\ModelAnnotator\Console\Commands\AnnotateModelDocs;
 
 class ModelAnnotatorServiceProvider extends ServiceProvider
 {
     public function register()
     {
         $this->commands([
-            AnnotateModels::class,
+            AnnotateModelDocs::class,
         ]);
     }
 }
