@@ -12,6 +12,7 @@ class ModelAnnotatorServiceProvider extends ServiceProvider
     {
         $this->commands([
             AnnotateModelDocs::class,
+            GenerateAnnotationMarkdown::class,
         ]);
     }
 }
