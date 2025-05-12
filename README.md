@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-**Laravel Model Annotator** is a developer tool that automatically adds PHPDoc annotations to your Eloquent model classes based on your database schema. It improves IDE autocompletion and static analysis for properties, relationships, and casted attributes.
+**Laravel Model Annotator** is a developer tool that automatically adds PHPDoc annotations to your Eloquent model classes based on your database schema. It improves IDE autocompletion and static analysis for properties, relationships, and casted attributes and now export full model documentation to a markdown file.
 
 ---
 
@@ -84,6 +84,31 @@ class User extends Model
 ```
 
 ---
+
+### Export Markdown Documentation
+```bash
+php artisan models:export-docs
+```
+Generates a `MODEL_DOCS.md` in the root directory with all properties, casts, and relationships grouped by model.
+
+## 🧪 Example Output (MODEL_DOCS.md)
+
+```markdown
+# Eloquent Model Annotations
+
+## User
+
+### Properties
+- `int $id`
+- `string $name`
+- `?string $email`
+
+### Casts
+- `datetime $created_at`
+
+### Relationships
+- `\App\Models\Team $team`
+```
 
 ## 🛠 Configuration
 
